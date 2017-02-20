@@ -3099,6 +3099,13 @@ static int read_thread(void *arg)
             continue;
         } else {
             is->eof = 0;
+            if (pkt->stream_index == is->audio_stream) {
+                av_log(NULL, AV_LOG_VERBOSE, "read audio frame, pts: %lld\n", pkt->pts);
+            } else if (pkt->stream_index == is->video_stream) {
+                av_log(NULL, AV_LOG_VERBOSE, "read video frame, pts: %lld\n", pkt->pts);
+            } else {
+                av_log(NULL, AV_LOG_VERBOSE, "read packet unknown !\n");
+            }
         }
         /* check if packet is in play range specified by user, then queue, otherwise discard */
         stream_start_time = ic->streams[pkt->stream_index]->start_time;
